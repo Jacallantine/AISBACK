@@ -97,7 +97,7 @@ namespace DATABASE
     
         }
 
-        private async Task<Dictionary<string, object>> VerifyLogin (string sql, List<MySqlParameter> parms)
+        private async Task<Dictionary<string,object>> VerifyLogin (string sql, List<MySqlParameter> parms)
         {
             Dictionary<string, object> LoginData = new();
             using var connection = new MySqlConnection(cs);
@@ -113,20 +113,24 @@ namespace DATABASE
             using var reader = command.ExecuteReader();
             if(await reader.ReadAsync())
             {
-               LoginData.Add("AccountId", reader.GetInt32("account_id"));
+                LoginData.Add("School", reader.GetString("school"));
+               LoginData.Add("AccountId", reader.GetString("account_id"));
                LoginData.Add("FirstName", reader.GetString("first_name"));
                LoginData.Add("Email", reader.GetString("email"));
+                 Console.WriteLine(JsonSerializer.Serialize(LoginData, new JsonSerializerOptions { WriteIndented = true }));
+                return LoginData;
             }
-          Console.WriteLine(JsonSerializer.Serialize(LoginData, new JsonSerializerOptions { WriteIndented = true }));
+         
+         return null;
 
-            return LoginData;
+           
 
 
         }
       
         private async Task<Dictionary<string,object>> PostAccount(string sql, List<MySqlParameter> parms)
         {
-                 Dictionary<string, object> AccountData = new();
+                Dictionary<string, object> AccountData = new();
             using var connection = new MySqlConnection(cs);
             await connection.OpenAsync();
             using var command = new MySqlCommand(sql, connection);
@@ -139,9 +143,10 @@ namespace DATABASE
             using var reader = command.ExecuteReader();
             if(await reader.ReadAsync())
             {
-               AccountData.Add("AccountId", reader.GetInt32("account_id"));
+               AccountData.Add("AccountId", reader.GetString("account_id"));
                AccountData.Add("FirstName", reader.GetString("first_name"));
                AccountData.Add("Email", reader.GetString("email"));
+               AccountData.Add("School", reader.GetString("school"));
             }
 
             return AccountData;
@@ -151,9 +156,9 @@ namespace DATABASE
 
 
 
-     public async Task<Dictionary<string, object>> LoginBridge(Login newLogin)
+     public async Task<Dictionary<string,object>> LoginBridge(Login newLogin)
       {
-        string sql = "Select account_id, email, first_name from Accounts where email = @Email and password = @Password;";
+        string sql = "Select account_id, email, first_name, school from Accounts where email = @Email and password = @Password;";
         newLogin.Password = HashPassword(newLogin.Password);
         System.Console.WriteLine(newLogin.Password);
         
@@ -173,12 +178,12 @@ namespace DATABASE
         INSERT INTO Accounts (account_id, email, password, school, first_name, last_name)
         VALUES (@AccountId, @Email, @Password, @School, @FirstName, @LastName)";
 
-
+        // newAccount.AccountId = Guid.NewGuid().ToString();
         newAccount.Password = HashPassword(newAccount.Password);
 
          List<MySqlParameter> parms = new()
         {
-            new MySqlParameter("@AccountId", MySqlDbType.Int32) {Value = newAccount.AccountId},
+            new MySqlParameter("@AccountId", MySqlDbType.String) {Value = newAccount.AccountId},
             new MySqlParameter("@Email", MySqlDbType.String) {Value = newAccount.Email},
             new MySqlParameter("@Password", MySqlDbType.String) {Value = newAccount.Password},
             new MySqlParameter("@School", MySqlDbType.String) {Value = newAccount.School},
@@ -218,10 +223,57 @@ namespace DATABASE
         c.chat_id, m.datetime;";
          List<MySqlParameter> parms = new()
         {
-            new MySqlParameter("@AccountId", MySqlDbType.Int32) {Value = allChats.AccountId}
+            new MySqlParameter("@AccountId", MySqlDbType.String) {Value = allChats.AccountId}
         };
 
         return await GetChats(sql, parms);
+    }
+
+   private async Task<Dictionary<string, object>> PutAccount(string sql, List<MySqlParameter> parms)
+{
+    Dictionary<string, object> result = new();
+    using var connection = new MySqlConnection(cs);
+    await connection.OpenAsync();
+    using var command = new MySqlCommand(sql, connection);
+
+    if (parms != null)
+    {
+        command.Parameters.AddRange(parms.ToArray());
+    }
+
+    int rowsAffected = await command.ExecuteNonQueryAsync();
+
+    if (rowsAffected > 0)
+    {
+        result.Add("success", true);
+        result.Add("message", "Account updated successfully.");
+    }
+    else
+    {
+        result.Add("success", false);
+        result.Add("message", "No rows updated.");
+    }
+
+    return result;
+}
+
+
+
+
+    public async Task<Dictionary<string, object>> PutAccountBridge(AccountDto UpdateAccount)
+    {
+         string sql = "UPDATE accounts SET first_name = @FirstName, school = @School, email = @Email WHERE account_id = @AccountId";
+     
+              List<MySqlParameter> parms = new()
+        {
+            new MySqlParameter("@AccountId", MySqlDbType.String) {Value = UpdateAccount.AccountId},
+            new MySqlParameter("@School", MySqlDbType.String) {Value = UpdateAccount.School},
+            new MySqlParameter("@FistName", MySqlDbType.String) {Value = UpdateAccount.FirstName},
+            new MySqlParameter("@Email", MySqlDbType.String) { Value = UpdateAccount.Email}
+        };
+
+        return await PutAccount(sql, parms);
+
     }
 
     private string HashPassword(string password)

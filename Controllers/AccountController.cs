@@ -21,5 +21,13 @@ namespace Controllers
             return account;
 
         }
+
+        [HttpPut("UpdateAccount")]
+        public async Task<Dictionary<string, object>> UpdateAccount(AccountDto updateAccount)
+        {
+            Database myDatabase = new();
+            var account = await myDatabase.PutAccountBridge(updateAccount);
+            return account;
+        }
     }
 }

@@ -58,3 +58,4 @@ C:\Users\jared\Documents\321\AISAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Jso
 C:\Users\jared\Documents\321\AISAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
 C:\Users\jared\Documents\321\AISAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\jared\Documents\321\AISAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\jared\Documents\321\AISAPI\obj\Debug\net8.0\AISAPI.sourcelink.json

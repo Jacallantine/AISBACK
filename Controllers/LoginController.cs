@@ -17,12 +17,17 @@ namespace Controllers
     {
 
         [HttpPost("Login")]
-        public async Task<Dictionary<string,object>> Login(Login newLogin)
+        public async Task<IActionResult> Login(Login newLogin)
         {
 
             Database myDatabase = new();
             var account = await myDatabase.LoginBridge(newLogin);
-            return account;
+           
+           if (account == null)
+           {
+            return Unauthorized();
+           }                            
+               return Ok(account);
         }
 
 
