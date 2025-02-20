@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using DATABASE;
 
 namespace AISBACK.Controllers
 {
@@ -14,7 +16,7 @@ namespace AISBACK.Controllers
         public async void NewMessage(Message newMessage)
         {
             Database myDatabase = new();
-            myDatabase.PostMessagesBridge(newMessage);
+            myDatabase.PostMessageBridge(newMessage);
         }
     }
 }

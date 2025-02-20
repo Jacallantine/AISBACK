@@ -295,7 +295,7 @@ namespace DATABASE
             new MySqlParameter("@DateTime", MySqlDbType.DateTime) { Value = newMessage.Time}
         };
 
-        await PostMessage(sql, parms);
+        PostMessage(sql, parms);
     }
 
     private async void PostMessage(string sql, List<MySqlParameter> parms){

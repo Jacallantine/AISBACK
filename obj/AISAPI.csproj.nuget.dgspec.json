@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jared\\Documents\\AIS\\aisback\\AISAPI.csproj": {}
+    "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\AISAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jared\\Documents\\AIS\\aisback\\AISAPI.csproj": {
+    "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\AISAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jared\\Documents\\AIS\\aisback\\AISAPI.csproj",
+        "projectUniqueName": "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\AISAPI.csproj",
         "projectName": "AISAPI",
-        "projectPath": "C:\\Users\\jared\\Documents\\AIS\\aisback\\AISAPI.csproj",
+        "projectPath": "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\AISAPI.csproj",
         "packagesPath": "C:\\Users\\jared\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jared\\Documents\\AIS\\aisback\\obj\\",
+        "outputPath": "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jared\\AppData\\Roaming\\NuGet\\NuGet.Config"

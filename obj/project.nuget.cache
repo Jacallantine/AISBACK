@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lSYGDKsJDWI=",
+  "dgSpecHash": "tSfWMedIZqg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\jared\\Documents\\AIS\\aisback\\AISAPI.csproj",
+  "projectFilePath": "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\AISAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jared\\.nuget\\packages\\bouncycastle.cryptography\\2.3.1\\bouncycastle.cryptography.2.3.1.nupkg.sha512",
     "C:\\Users\\jared\\.nuget\\packages\\google.protobuf\\3.26.1\\google.protobuf.3.26.1.nupkg.sha512",
