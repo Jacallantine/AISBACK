@@ -45,7 +45,7 @@ namespace DATABASE
     while (await reader.ReadAsync())
     {
         
-        int chatId = reader.GetInt32(reader.GetOrdinal("chat_id"));
+        string chatId = reader.GetString(reader.GetOrdinal("chat_id"));
 
        
         if (currentChat == null || currentChat.ChatId != chatId)
@@ -54,7 +54,7 @@ namespace DATABASE
             currentChat = new ChatList
             {
                 ChatId = chatId,
-                AccountId = reader.GetInt32(reader.GetOrdinal("account_id")),
+                AccountId = reader.GetString(reader.GetOrdinal("account_id")),
                 Title = reader.GetString(reader.GetOrdinal("title")),
                 Time = reader.GetDateTime(reader.GetOrdinal("datetime")),
                 Messages = new List<Message>()
@@ -68,8 +68,8 @@ namespace DATABASE
         {
             var message = new Message
             {
-                MessageId = reader.GetInt32(reader.GetOrdinal("message_id")),
-                ChatId = reader.GetInt32(reader.GetOrdinal("chat_id")),
+                MessageId = reader.GetString(reader.GetOrdinal("message_id")),
+                ChatId = reader.GetString(reader.GetOrdinal("chat_id")),
                 Role = reader.GetString(reader.GetOrdinal("role")),
                 Text = reader.GetString(reader.GetOrdinal("text")),
                 Time = reader.GetDateTime(reader.GetOrdinal("datetime"))
@@ -198,8 +198,8 @@ namespace DATABASE
         string sql = "insert into Chats (account_id, chat_id, datetime, title) values (@AccountId, @ChatId, @Time, @Title)";
          List<MySqlParameter> parms = new()
         {
-            new MySqlParameter("@AccountId", MySqlDbType.Int32) {Value = newChat.AccountId},
-            new MySqlParameter("@ChatId", MySqlDbType.Int32) {Value = newChat.ChatId},
+            new MySqlParameter("@AccountId", MySqlDbType.String) {Value = newChat.AccountId},
+            new MySqlParameter("@ChatId", MySqlDbType.String) {Value = newChat.ChatId},
             new MySqlParameter("@Time", MySqlDbType.DateTime) {Value = newChat.Time.ToUniversalTime()},
             new MySqlParameter("@Title", MySqlDbType.String) {Value = newChat.Title}
         };

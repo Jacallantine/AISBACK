@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AISAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8691b763fb7dc6bc84823a4c2582a92210e9e6d7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3af6787d6daa2e6037847576b81d32a0ab09fbf")]
 [assembly: System.Reflection.AssemblyProductAttribute("AISAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AISAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

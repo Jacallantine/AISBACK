@@ -2,6 +2,6 @@ namespace Models{
 
     public class ChatDto
     {
-        public int AccountId { get; set; }
+        public string AccountId { get; set; }
     }
 }
