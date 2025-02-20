@@ -22,7 +22,7 @@ namespace Controllers
         }
 
 
-            [HttpGet("GetChats")]
+        [HttpGet("GetChats")]
         public async Task<List<ChatList>> GetChats(ChatDto allChats)
         {
             Database myDatabase = new();

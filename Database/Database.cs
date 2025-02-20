@@ -130,7 +130,7 @@ namespace DATABASE
       
         private async Task<Dictionary<string,object>> PostAccount(string sql, List<MySqlParameter> parms)
         {
-                Dictionary<string, object> AccountData = new();
+            Dictionary<string, object> AccountData = new();
             using var connection = new MySqlConnection(cs);
             await connection.OpenAsync();
             using var command = new MySqlCommand(sql, connection);
@@ -176,7 +176,7 @@ namespace DATABASE
     {
        string sql = @"
         INSERT INTO Accounts (account_id, email, password, school, first_name, last_name)
-        VALUES (@AccountId, @Email, @Password, @School, @FirstName, @LastName)";
+        VALUES (@AccountId, @Email, @Password, @School, @FirstName, @LastName);";
 
         // newAccount.AccountId = Guid.NewGuid().ToString();
         newAccount.Password = HashPassword(newAccount.Password);
@@ -195,7 +195,7 @@ namespace DATABASE
 
     public async void PostChatsBridge(Chat newChat)
     {
-        string sql = "insert into Chats (account_id, chat_id, datetime, title) values (@AccountId, @ChatId, @Time, @Title)";
+        string sql = "insert into Chats (account_id, chat_id, datetime, title) values (@AccountId, @ChatId, @Time, @Title);";
          List<MySqlParameter> parms = new()
         {
             new MySqlParameter("@AccountId", MySqlDbType.String) {Value = newChat.AccountId},
@@ -262,7 +262,7 @@ namespace DATABASE
 
     public async Task<Dictionary<string, object>> PutAccountBridge(AccountDto UpdateAccount)
     {
-         string sql = "UPDATE accounts SET first_name = @FirstName, school = @School, email = @Email WHERE account_id = @AccountId";
+         string sql = "UPDATE accounts SET first_name = @FirstName, school = @School, email = @Email WHERE account_id = @AccountId;";
      
               List<MySqlParameter> parms = new()
         {
@@ -282,6 +282,43 @@ namespace DATABASE
             byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
             return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower(); // Convert bytes to a lowercase hex string
         }
+    public async void PostMessageBridge(Message newMessage){
+        string sql = @"INSERT INTO Messages (message_id, Chat_id, role, content, datetime)
+        VALUES (@messageId, @ChatId, @Role, @Text, @Time);";
+     
+              List<MySqlParameter> parms = new()
+        {
+            new MySqlParameter("@MessageId", MySqlDbType.String) {Value = newMessage.MessageId},
+            new MySqlParameter("@ChatId", MySqlDbType.String) {Value = newMessage.ChatId},
+            new MySqlParameter("@Role", MySqlDbType.String) {Value = newMessage.Role},
+            new MySqlParameter("@Content", MySqlDbType.String) { Value = newMessage.Text},
+            new MySqlParameter("@DateTime", MySqlDbType.DateTime) { Value = newMessage.Time}
+        };
+
+        await PostMessage(sql, parms);
+    }
+
+    private async void PostMessage(string sql, List<MySqlParameter> parms){
+            Dictionary<string, object> MessageData = new();
+            using var connection = new MySqlConnection(cs);
+            await connection.OpenAsync();
+            using var command = new MySqlCommand(sql, connection);
+
+             if(parms != null)
+            {
+                command.Parameters.AddRange(parms.ToArray());
+            }
+
+            using var reader = command.ExecuteReader();
+            if(await reader.ReadAsync())
+            {
+               MessageData.Add("MessageId", reader.GetString("message_id"));
+               MessageData.Add("ChatId", reader.GetString("Chat_id"));
+               MessageData.Add("Role", reader.GetString("role"));
+               MessageData.Add("Text", reader.GetString("content"));
+               MessageData.Add("Time", reader.GetDateTime("datetime"));
+            }
+    }
 
 
 

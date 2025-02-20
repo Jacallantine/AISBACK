@@ -1,0 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AISBACK.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class MessageController : ControllerBase
+    {
+        [HttpPost("NewMessage")]
+        public async void NewMessage(Message newMessage)
+        {
+            Database myDatabase = new();
+            myDatabase.PostMessagesBridge(newMessage);
+        }
+    }
+}
