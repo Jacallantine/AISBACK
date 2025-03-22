@@ -13,8 +13,10 @@ namespace Models
     {
         public string ChatId { get; set;}
         public string AccountId { get; set;}
-        public DateTime Time { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
         public string Title { get; set; }
-        public List<Message> Messages { get; set; } = new List<Message>();
+        public string Description { get; set; }
+        public string RedirectLink { get; set; }
     }
 }

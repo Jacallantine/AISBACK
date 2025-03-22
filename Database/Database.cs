@@ -26,17 +26,17 @@ namespace DATABASE
 
        }
 
-   private async Task<List<ChatList>> GetChats(string sql, List<MySqlParameter> parms)
+   private async Task<List<ChatList>> GetChats(string sql)
 {
     List<ChatList> chats = new();
     using var connection = new MySqlConnection(cs);
     await connection.OpenAsync();
     using var command = new MySqlCommand(sql, connection);
 
-    if (parms != null)
-    {
-        command.Parameters.AddRange(parms.ToArray());
-    }
+    // if (parms != null)
+    // {
+    //     command.Parameters.AddRange(parms.ToArray());
+    // }
 
     using var reader = await command.ExecuteReaderAsync();
 
@@ -45,38 +45,35 @@ namespace DATABASE
     while (await reader.ReadAsync())
     {
         
-        string chatId = reader.GetString(reader.GetOrdinal("chat_id"));
 
-       
-        if (currentChat == null || currentChat.ChatId != chatId)
-        {
            
             currentChat = new ChatList
             {
-                ChatId = chatId,
+                ChatId = reader.GetString(reader.GetOrdinal("Chat_id")),
                 AccountId = reader.GetString(reader.GetOrdinal("account_id")),
                 Title = reader.GetString(reader.GetOrdinal("title")),
-                Time = reader.GetDateTime(reader.GetOrdinal("datetime")),
-                Messages = new List<Message>()
+                StartTime = reader.GetDateTime(reader.GetOrdinal("start_time")),
+                EndTime = reader.GetDateTime(reader.GetOrdinal("end_time")),
+                Description = reader.GetString(reader.GetOrdinal("description"))
+                RedirectLink = reader.GetString(reader.GetOrdinal("redirect_link"))
             };
 
             chats.Add(currentChat);
-        }
-
+        
      
-        if (!reader.IsDBNull(reader.GetOrdinal("message_id")))
-        {
-            var message = new Message
-            {
-                MessageId = reader.GetString(reader.GetOrdinal("message_id")),
-                ChatId = reader.GetString(reader.GetOrdinal("Chat_id")),
-                Role = reader.GetString(reader.GetOrdinal("role")),
-                Text = reader.GetString(reader.GetOrdinal("content")),
-                Time = reader.GetDateTime(reader.GetOrdinal("datetime"))
-            };
+        // if (!reader.IsDBNull(reader.GetOrdinal("message_id")))
+        // {
+        //     var message = new Message
+        //     {
+        //         MessageId = reader.GetString(reader.GetOrdinal("message_id")),
+        //         ChatId = reader.GetString(reader.GetOrdinal("Chat_id")),
+        //         Role = reader.GetString(reader.GetOrdinal("role")),
+        //         Text = reader.GetString(reader.GetOrdinal("content")),
+        //         Time = reader.GetDateTime(reader.GetOrdinal("datetime"))
+        //     };
 
-            currentChat.Messages.Add(message);
-        }
+        //     currentChat.Messages.Add(message);
+        // }
     }
 
     return chats;
@@ -195,13 +192,16 @@ namespace DATABASE
 
     public async void PostChatsBridge(Chat newChat)
     {
-        string sql = "insert into Chats (account_id, chat_id, datetime, title) values (@AccountId, @ChatId, @Time, @Title);";
+        string sql = "insert into Chats (account_id, chat_id, start_time, end_time, title, description, redirect_link) values (@AccountId, @ChatId, @StartTime, @EndTime, @Title, @Description, @RedirectLink);";
          List<MySqlParameter> parms = new()
         {
             new MySqlParameter("@AccountId", MySqlDbType.String) {Value = newChat.AccountId},
             new MySqlParameter("@ChatId", MySqlDbType.String) {Value = newChat.ChatId},
-            new MySqlParameter("@Time", MySqlDbType.DateTime) {Value = newChat.Time.ToUniversalTime()},
-            new MySqlParameter("@Title", MySqlDbType.String) {Value = newChat.Title}
+            new MySqlParameter("@StartTime", MySqlDbType.String) {Value = newChat.StartTime},
+            new MySqlParameter("@EndTime", MySqlDbType.String) {Value = newChat.EndTime},
+            new MySqlParameter("@Title", MySqlDbType.String) {Value = newChat.Title},
+            new MySqlParameter("@Description", MySqlDbType.String) {Value = newChat.Description},
+            new MySqlParameter("@RedirectLink", MySqlDbType.String) {Value = newChat.RedirectLink}
         };
         PostChats(sql, parms);
     }
@@ -221,12 +221,14 @@ namespace DATABASE
         c.account_id = @AccountId
     ORDER BY 
         c.chat_id, m.datetime;";
-         List<MySqlParameter> parms = new()
-        {
-            new MySqlParameter("@AccountId", MySqlDbType.String) {Value = allChats.AccountId}
-        };
 
-        return await GetChats(sql, parms);
+        string sql2 = @"Select * from Chats";
+        //  List<MySqlParameter> parms = new()
+        // {
+        //     new MySqlParameter("@AccountId", MySqlDbType.String) {Value = allChats.AccountId}
+        // };
+
+        return await GetChats(sql2);
     }
 
    private async Task<Dictionary<string, object>> PutAccount(string sql, List<MySqlParameter> parms)
@@ -264,7 +266,7 @@ namespace DATABASE
     {
          string sql = "UPDATE accounts SET first_name = @FirstName, school = @School, email = @Email WHERE account_id = @AccountId;";
      
-              List<MySqlParameter> parms = new()
+              List<MySqlParameter> parms = new();
         {
             new MySqlParameter("@AccountId", MySqlDbType.String) {Value = UpdateAccount.AccountId},
             new MySqlParameter("@School", MySqlDbType.String) {Value = UpdateAccount.School},
