@@ -16,6 +16,10 @@ namespace AISBACK.Controllers
         public async void NewMessage(Message newMessage)
         {
             Database myDatabase = new();
+            System.Console.WriteLine(newMessage.ChatId);
+            System.Console.WriteLine(newMessage.MessageId);
+            System.Console.WriteLine(newMessage.Text);
+            System.Console.WriteLine(newMessage.Time);
             myDatabase.PostMessageBridge(newMessage);
         }
     }

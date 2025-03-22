@@ -69,9 +69,9 @@ namespace DATABASE
             var message = new Message
             {
                 MessageId = reader.GetString(reader.GetOrdinal("message_id")),
-                ChatId = reader.GetString(reader.GetOrdinal("chat_id")),
+                ChatId = reader.GetString(reader.GetOrdinal("Chat_id")),
                 Role = reader.GetString(reader.GetOrdinal("role")),
-                Text = reader.GetString(reader.GetOrdinal("text")),
+                Text = reader.GetString(reader.GetOrdinal("content")),
                 Time = reader.GetDateTime(reader.GetOrdinal("datetime"))
             };
 
@@ -211,12 +211,12 @@ namespace DATABASE
     {
         string sql = @"
     SELECT 
-        c.chat_id, c.account_id, c.title, c.datetime,
-        m.message_id, m.Content
+        c.Chat_id, c.account_id, c.title, c.datetime, m.Chat_id, m.content,
+        m.message_id, m.datetime, m.role
     FROM 
         Chats c
     LEFT JOIN 
-        Messages m ON c.chat_id = m.chat_id
+        Messages m ON c.Chat_id = m.Chat_id
     WHERE 
         c.account_id = @AccountId
     ORDER BY 
@@ -283,7 +283,7 @@ namespace DATABASE
             return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower(); // Convert bytes to a lowercase hex string
         }
     public async void PostMessageBridge(Message newMessage){
-        string sql = @"INSERT INTO Messages (message_id, Chat_id, role, content, datetime)
+        string sql = @"INSERT INTO Messages (message_id, Chat_id, role, content, datetime )
         VALUES (@messageId, @ChatId, @Role, @Text, @Time);";
      
               List<MySqlParameter> parms = new()
@@ -291,8 +291,8 @@ namespace DATABASE
             new MySqlParameter("@MessageId", MySqlDbType.String) {Value = newMessage.MessageId},
             new MySqlParameter("@ChatId", MySqlDbType.String) {Value = newMessage.ChatId},
             new MySqlParameter("@Role", MySqlDbType.String) {Value = newMessage.Role},
-            new MySqlParameter("@Content", MySqlDbType.String) { Value = newMessage.Text},
-            new MySqlParameter("@DateTime", MySqlDbType.DateTime) { Value = newMessage.Time}
+            new MySqlParameter("@Time", MySqlDbType.DateTime) { Value = newMessage.Time},
+            new MySqlParameter("@Text", MySqlDbType.String) { Value = newMessage.Text},
         };
 
         PostMessage(sql, parms);

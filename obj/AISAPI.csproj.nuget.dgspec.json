@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\AISAPI.csproj": {}
+    "C:\\Users\\jared\\Documents\\321\\AISAPI\\AISAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\AISAPI.csproj": {
+    "C:\\Users\\jared\\Documents\\321\\AISAPI\\AISAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\AISAPI.csproj",
+        "projectUniqueName": "C:\\Users\\jared\\Documents\\321\\AISAPI\\AISAPI.csproj",
         "projectName": "AISAPI",
-        "projectPath": "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\AISAPI.csproj",
+        "projectPath": "C:\\Users\\jared\\Documents\\321\\AISAPI\\AISAPI.csproj",
         "packagesPath": "C:\\Users\\jared\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jared\\Documents\\AIS\\AISBACK\\obj\\",
+        "outputPath": "C:\\Users\\jared\\Documents\\321\\AISAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jared\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\jared\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -79,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
