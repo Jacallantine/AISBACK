@@ -180,7 +180,7 @@ private async Task<List<ChatList>> GetChats(string sql2)
     public async Task<List<ChatList>> GetChatsBridge()
     {
 
-        string sql2 = @"Select * from Chats;";
+       string sql2 = "SELECT * FROM Chats WHERE start_time >= NOW() ORDER BY start_time ASC;";
         //  List<MySqlParameter> parms = new()
         // {
         //     new MySqlParameter("@AccountId", MySqlDbType.String) {Value = allChats.AccountId}
