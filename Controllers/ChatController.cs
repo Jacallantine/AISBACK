@@ -15,18 +15,18 @@ namespace Controllers
     {
         
         [HttpPost("NewChat")]
-        public async void NewChat(Chat newChat)
+        public async void NewChat(ChatList newChat)
         {
             Database myDatabase = new();
             myDatabase.PostChatsBridge(newChat);
         }
 
 
-        [HttpPost("GetChats")]
-        public async Task<List<ChatList>> GetChats(ChatDto allChats)
+        [HttpGet("GetChats")]
+        public async Task<List<ChatList>> GetChats()
         {
             Database myDatabase = new();
-            var chats = await myDatabase.GetChatsBridge(allChats);
+            var chats = await myDatabase.GetChatsBridge();
             return chats;
         }
     }

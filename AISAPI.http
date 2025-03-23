@@ -1,4 +1,4 @@
-@AISAPI_HostAddress = http://localhost:5087
+@AISAPI_HostAddress = http://localhost:5089
 
 GET {{AISAPI_HostAddress}}/weatherforecast/
 Accept: application/json
